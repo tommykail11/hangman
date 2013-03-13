@@ -12,13 +12,12 @@ class Hangman
 	
 	def self.select_random_word
 		dictionary = ["ruby", "rails", "monk", "monkey", "ridiculous", "luscious", "moist", "asscrack"]
-		number = rand(3)
-		dictionary[number]
+		dictionary.sample
 	end
 
 	def self.make_blank(word)
-		@blank = "_" * word.length
-		@blank
+		blank = "_" * word.length
+		blank
 	end
 
 	def self.letter_check(letter, word)
@@ -56,7 +55,10 @@ class Hangman
 		self.put_letters_into_blank(blank, guessed_letter, index_array)
 	end
 
-	
+	def self.initialize()
+		word = self.select_random_word
+		blank = self.make_blank(word)
+	end
 
 # to do:
 # • change from self to Hangman.new
