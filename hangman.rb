@@ -58,6 +58,11 @@ class Hangman
 	def self.initialize()
 		word = self.select_random_word
 		blank = self.make_blank(word)
+		puts "This is the word: #{blank}. Guess a letter."
+		letter = gets.chomp
+		result = self.letter_check(letter, word)
+		self.outcome(result)
+		blank = self.new_blank(letter, word, blank)
 	end
 
 # to do:
