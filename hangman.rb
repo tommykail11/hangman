@@ -16,17 +16,16 @@ class Hangman
 	end
 
 	def self.make_blank(word)
-		blank = "_" * word.length
-		blank
+		@blank = "_" * word.length
 	end
 
 	def self.letter_check(letter, word)
 		word.include?(letter)
 	end
 
-	def self.outcome(result)
+	def self.outcome(result, letter, word)
 		if result
-			# we'll put it here
+			@blank = self.new_blank(letter, word)
 			return "You guessed correctly!"
 		else
 			@tries_left -= 1
@@ -40,29 +39,30 @@ class Hangman
 		index_array
 	end
 
-	def self.put_letters_into_blank(blank, guessed_letter, index_array)
-		blank = blank.split("") 
-		(0...blank.length).each do |blank_index|
+	def self.put_letters_into_blank(guessed_letter, index_array)
+		blank_array = @blank.split("") 
+		(0...blank_array.length).each do |blank_index|
 			if index_array.include?(blank_index)
-				blank[blank_index] = guessed_letter
+				blank_array[blank_index] = guessed_letter
 			end
 		end
-		blank.join("")
+		blank_array.join("")
 	end
 
-	def self.new_blank(guessed_letter, word, blank)
+	def self.new_blank(guessed_letter, word)
 		index_array = self.find_letter_positions(guessed_letter, word)
-		self.put_letters_into_blank(blank, guessed_letter, index_array)
+		self.put_letters_into_blank(guessed_letter, index_array)
 	end
 
 	def self.initialize()
 		word = self.select_random_word
-		blank = self.make_blank(word)
-		puts "This is the word: #{blank}. Guess a letter."
-		letter = gets.chomp
-		result = self.letter_check(letter, word)
-		self.outcome(result)
-		blank = self.new_blank(letter, word, blank)
+		self.make_blank(word)
+		while true
+				puts "This is the word: #{@blank}. Guess a letter."
+				letter = gets.chomp
+				result = self.letter_check(letter, word)
+				puts self.outcome(result, letter, word)
+		end
 	end
 
 # to do:
