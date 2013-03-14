@@ -2,6 +2,11 @@ class Hangman
 	@tries_left = 8
 	@blank = ""
 	@game_lost = false
+	@game_won = false
+
+	def self.blank
+		@blank
+	end
 
 	def self.blank=(blank)
 		@blank = blank
@@ -17,6 +22,10 @@ class Hangman
 
 	def self.game_lost
 		@game_lost
+	end
+
+	def self.game_won
+		@game_won
 	end
 	
 	def self.select_random_word
@@ -67,19 +76,23 @@ class Hangman
 		@game_lost = true if number <= 0
 	end
 
+	def self.won?(blank)
+		@game_won = true if !blank.include?("_")
+	end
+
 	def self.initialize()
 		word = self.select_random_word
 		self.make_blank(word)
-		while @game_lost == false
+		while @game_lost == false && @game_won == false
 				puts "This is the word: #{@blank}. Guess a letter."
 				letter = gets.chomp
 				result = self.letter_check(letter, word)
 				puts self.outcome(result, letter, word)
 				Hangman.lost?(Hangman.tries_left)
+				Hangman.won?(@blank)
 		end
+		puts "You won the game." if @game_won
+		puts "You lost to a computer. Wow." if @game_lost
 	end
-
-# to do:
-# • change from self to Hangman.new
 
 end

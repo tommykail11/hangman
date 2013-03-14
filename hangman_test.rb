@@ -38,9 +38,15 @@ class HangmanTest < Test::Unit::TestCase
 		assert_equal "_ll__", Hangman.new_blank("l", "allow")
 	end
 
-	def test_if_program_complete
+	def test_if_tries_run_out
 		Hangman.tries_left = 0
 		Hangman.lost?(Hangman.tries_left)
 		assert_equal true, Hangman.game_lost
+	end
+
+	def test_if_full_word_is_guessed
+		Hangman.blank = "motorcycle"
+		Hangman.won?(Hangman.blank)
+		assert_equal true, Hangman.game_won
 	end
 end
