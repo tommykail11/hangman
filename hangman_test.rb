@@ -18,9 +18,9 @@ class HangmanTest < Test::Unit::TestCase
 	end
 
 	def test_answer
-		Hangman.outcome(false)
+		Hangman.outcome(false, "l", "bear")
 		assert_equal "You have 7 tries left.",  "You have #{Hangman.tries_left} tries left."
-		assert_equal "You guessed correctly!", Hangman.outcome(true)
+		assert_equal "You guessed correctly!", Hangman.outcome(true, "n", "nothing")
 	end
 
 	def test_if_correct_letter_positions_found
@@ -29,10 +29,18 @@ class HangmanTest < Test::Unit::TestCase
 	end
 
 	def test_if_blanks_are_filled_with_letters
-		assert_equal "_ll_", Hangman.put_letters_into_blank("____", "l", [1, 2])
+		Hangman.blank = "_____"
+		assert_equal "_ll__", Hangman.put_letters_into_blank("l", [1, 2])
 	end
 
 	def test_if_blank_renews
-		assert_equal "_ll__", Hangman.new_blank("l", "allow", "_____")
+		Hangman.blank = "_____"
+		assert_equal "_ll__", Hangman.new_blank("l", "allow")
+	end
+
+	def test_if_program_complete
+		Hangman.tries_left = 0
+		Hangman.lost?(Hangman.tries_left)
+		assert_equal true, Hangman.game_lost
 	end
 end
