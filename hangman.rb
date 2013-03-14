@@ -41,9 +41,10 @@ class Hangman
 		word.include?(letter)
 	end
 
+	# This method should have a more descriptive name.
 	def self.outcome(result, letter, word)
 		if result
-			@blank = self.put_letter_into_blank(letter, word)
+			@blank = self.update_blank(letter, word)
 			return "You guessed correctly!"
 		else
 			@tries_left -= 1
@@ -68,7 +69,8 @@ class Hangman
 		blank_array.join("")
 	end
 
-	def self.put_letter_into_blank(guessed_letter, word)
+	# This method should have a better name?
+	def self.update_blank(guessed_letter, word)
 		index_array = self.find_where_letter_is_in_word(guessed_letter, word)
 		self.put_letter_into_blank_where_it_was_in_word(guessed_letter, index_array)
 	end
