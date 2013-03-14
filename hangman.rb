@@ -28,22 +28,23 @@ class Hangman
 		@game_won
 	end
 	
-	def self.select_random_word
+	def self.get_word
 		dictionary = ["ruby", "rails", "monk", "monkey", "ridiculous", "luscious", "moist", "asscrack"]
 		dictionary.sample
 	end
 
-	def self.make_blank(word)
+	def self.make_word_blank(word)
 		@blank = "_" * word.length
 	end
 
-	def self.letter_check(letter, word)
+	def self.check_word_has_letter(letter, word)
 		word.include?(letter)
 	end
 
+	# This method should have a more descriptive name.
 	def self.outcome(result, letter, word)
 		if result
-			@blank = self.new_blank(letter, word)
+			@blank = self.update_blank(letter, word)
 			return "You guessed correctly!"
 		else
 			@tries_left -= 1
@@ -51,45 +52,47 @@ class Hangman
 		end
 	end
 
-	def self.find_letter_positions(guessed_letter, word)
+	def self.find_where_letter_is_in_word(guessed_letter, word)
 		index_array = []
 		word.split("").each_with_index { |letter, index| index_array << index if letter == guessed_letter }
 		index_array
 	end
 
-	def self.put_letters_into_blank(guessed_letter, index_array)
+	# This method's name should be more concise.
+	def self.put_letter_into_blank_where_it_was_in_word(letter, index_array)
 		blank_array = @blank.split("") 
 		(0...blank_array.length).each do |blank_index|
 			if index_array.include?(blank_index)
-				blank_array[blank_index] = guessed_letter
+				blank_array[blank_index] = letter
 			end
 		end
 		blank_array.join("")
 	end
 
-	def self.new_blank(guessed_letter, word)
-		index_array = self.find_letter_positions(guessed_letter, word)
-		self.put_letters_into_blank(guessed_letter, index_array)
+	# This method should have a better name?
+	def self.update_blank(guessed_letter, word)
+		index_array = self.find_where_letter_is_in_word(guessed_letter, word)
+		self.put_letter_into_blank_where_it_was_in_word(guessed_letter, index_array)
 	end
 
-	def self.lost?(number)
+	def self.game_lost?(number)
 		@game_lost = true if number <= 0
 	end
 
-	def self.won?(blank)
+	def self.game_won?(blank)
 		@game_won = true if !blank.include?("_")
 	end
 
 	def self.initialize()
-		word = self.select_random_word
-		self.make_blank(word)
+		word = self.get_word
+		self.make_word_blank(word)
 		while @game_lost == false && @game_won == false
 				puts "This is the word: #{@blank}. Guess a letter."
 				letter = gets.chomp
-				result = self.letter_check(letter, word)
+				result = self.check_word_has_letter(letter, word)
 				puts self.outcome(result, letter, word)
-				Hangman.lost?(Hangman.tries_left)
-				Hangman.won?(@blank)
+				Hangman.game_lost?(Hangman.tries_left)
+				Hangman.game_won?(@blank)
 		end
 		puts "You won the game." if @game_won
 		puts "You lost to a computer. Wow." if @game_lost
