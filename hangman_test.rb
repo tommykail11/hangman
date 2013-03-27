@@ -5,7 +5,7 @@ class HangmanTest < Test::Unit::TestCase
 
 	# This test should test whether word gotten is a word, not that it's from a dictionary. 
 	def test_new_word_is_from_dictionary
-		dictionary = ["ruby", "rails", "monk", "monkey", "ridiculous", "luscious", "moist", "asscrack"]
+		dictionary = ["ruby", "rails", "monk", "monkey", "ridiculous", "longitude", "machine", "animal"]
 		assert_equal true, dictionary.include?(Hangman.get_word)
 	end
 

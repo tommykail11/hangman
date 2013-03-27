@@ -29,7 +29,7 @@ class Hangman
 	end
 	
 	def self.get_word
-		dictionary = ["ruby", "rails", "monk", "monkey", "ridiculous", "luscious", "moist", "asscrack"]
+		dictionary = ["ruby", "rails", "monk", "monkey", "ridiculous", "longitude", "machine", "animal"]
 		dictionary.sample
 	end
 
